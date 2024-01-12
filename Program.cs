@@ -1,10 +1,6 @@
-﻿using System.Globalization;
+﻿using Plants;
 
-using Microsoft.VisualBasic;
-
-using Plants;
-
-List<Plant> plants = new List<Plant>()
+List<Plant> plants = new()
 {
     new Plant()
     {
@@ -58,6 +54,9 @@ List<Plant> plants = new List<Plant>()
     }
 };
 
+Random random = new();
+int randomPlant = random.Next(1, plants.Count);
+
 string greeting = "\n\t\tWelcome to Green Again\n\tYesterday's Blooms, Today's Treasures.\n";
 
 Console.WriteLine(greeting);
@@ -65,71 +64,83 @@ Console.WriteLine(greeting);
 string? choice = null;
 while (choice != "5")
 {
-  
-    Console.WriteLine("Main Menu:");
+
+    Console.WriteLine("Main Menu:\n");
     Console.WriteLine("1. Display all plants");
     Console.WriteLine("2. Post a plant to be adopted");
     Console.WriteLine("3. Adopt a plant");
     Console.WriteLine("4. Delist a plant");
-    Console.WriteLine("5. Exit\n");
-  
-  choice = Console.ReadLine();
-  switch (choice)
-  {
-      case "1":
-          Console.Clear();
-          ListPlants();
-          ReturnMessage();
-          Console.Clear();
-          break;
-    
-      case "2":
-          Console.Clear();
-          PostPlant();
-          Console.Clear();
-          break;
+    Console.WriteLine("5. Plant of the Day");
+    Console.WriteLine("6. Exit\n");
 
-      case "3":
-          Console.Clear();
-          AdoptPlant();
-          ReturnMessage();
-          Console.Clear();
-          // ReturnMessage();
-          break;
+    choice = Console.ReadLine();
+    switch (choice)
+    {
+        case "1":
+            Console.Clear();
+            ListPlants();
+            ReturnMessage();
+            Console.Clear();
+            break;
 
-      case "4":
-          // Delist Plant
+        case "2":
+            Console.Clear();
+            PostPlant();
+            Console.Clear();
+            break;
 
-      case "5":
-          Console.Clear();
-          Console.WriteLine("\nHave a pleasant day!\n\n");
-          break;
-      
-      default:
-          Console.Clear();
-          Console.WriteLine("\nInvalid choice. Please, input a number from the list...");
-          break;
-          
-  }
+        case "3":
+            Console.Clear();
+            AdoptPlant();
+            ReturnMessage();
+            Console.Clear();
+            break;
+
+        case "4":
+            Console.Clear();
+            RemovePlant();
+            ReturnMessage();
+            Console.Clear();
+            break;
+
+        case "5":
+            // TODO: Plant of the Days
+            Console.Clear();
+            PlantOfTheDay();
+            ReturnMessage();
+            Console.Clear();
+            break;
+
+        case "6":
+            Console.Clear();
+            Console.WriteLine("\nHave a pleasant day!\n\n");
+            break;
+
+        default:
+            Console.Clear();
+            Console.WriteLine("\nInvalid choice. Please, input a number from the list...");
+            break;
+
+    }
 }
 
 void ListPlants()
 {
-  Console.WriteLine("Plants:\n");
+    Console.WriteLine("Plants:\n");
 
-  for (int i = 0; i < plants.Count; i++)
-  {
-      Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold == true ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars");
-  }
+    for (int i = 0; i < plants.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold == true ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars");
+    }
 }
 
 void PostPlant()
-{   
+{
     string? readResult = null;
 
     Console.WriteLine("Post a Plant:\n");
 
-
+    // TODO: Setup user input validation
 
     do
     {
@@ -145,7 +156,10 @@ void PostPlant()
 
         Console.WriteLine("\nEnter plant light needs (1-5):");
         readResult = Console.ReadLine();
-        plantLight = Convert.ToInt32(readResult.Trim());
+        if (readResult != null)
+        {
+            plantLight = Convert.ToInt32(readResult.Trim());
+        }
 
         Console.WriteLine("\nEnter plant price:");
         readResult = Console.ReadLine();
@@ -181,7 +195,7 @@ void PostPlant()
 void AdoptPlant()
 {
     // Display only available plants
-    List<Plant> availablePlants = plants.Where(p =>!p.Sold).ToList();
+    List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList();
 
     Console.WriteLine("Select a plant using its number:\n");
     for (int i = 0; i < availablePlants.Count; i++)
@@ -206,7 +220,27 @@ void AdoptPlant()
 
 void RemovePlant()
 {
-    
+    Console.WriteLine("Select a plant to remove:\n");
+    foreach (Plant plant in plants)
+    {
+        Console.WriteLine($"{plant.PlantID}. {plant.Species}");
+    }
+
+    Console.WriteLine();
+    int plantID = Convert.ToInt32(Console.ReadLine());
+
+    Plant? deletedPlant = plants.Find(p => p.PlantID == plantID);
+
+    if (deletedPlant != null)
+    {
+        plants.Remove(deletedPlant);
+        Console.WriteLine("\nPlant deleted");
+    }
+}
+
+void PlantOfTheDay()
+{
+    Console.WriteLine("Today's Plant of the Day is...\n");
 }
 
 void ReturnMessage()
