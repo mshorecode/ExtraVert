@@ -1,68 +1,37 @@
 ﻿using Plants;
 
-List<Plant> plants = new()
-{
-    new Plant()
-    {
-        PlantID = 1,
-        Species = "Chinese Evergreen",
-        LightNeeds = 4,
-        AskingPrice = 24.00M,
-        City = "Hendersonville",
-        ZIP = 37075,
-        Sold = false
-    },
-    new Plant()
-    {
-        PlantID = 2,
-        Species = "Fern",
-        LightNeeds = 2,
-        AskingPrice = 12.00M,
-        City = "Fern Gully",
-        ZIP = 97031,
-        Sold = true
-    },
-    new Plant()
-    {
-        PlantID = 3,
-        Species = "Peace Lily",
-        LightNeeds = 5,
-        AskingPrice = 32.35M,
-        City = "Las Vegas",
-        ZIP = 88901,
-        Sold = false
-    },
-    new Plant()
-    {
-        PlantID = 4,
-        Species = "Money Tree",
-        LightNeeds = 3,
-        AskingPrice = 20.00M,
-        City = "Nashville",
-        ZIP = 37011,
-        Sold = false,
-    },
-    new Plant()
-    {
-        PlantID = 5,
-        Species = "Aloe Vera",
-        LightNeeds = 3,
-        AskingPrice = 8.00M,
-        City = "Goodlettsville",
-        ZIP = 37072,
-        Sold = true
-    }
-};
+List<Plant> plants =
+    new() { new Plant() { PlantID = 1, Species = "Chinese Evergreen",
+                          LightNeeds = 4, AskingPrice = 24.00M,
+                          City = "Hendersonville", ZIP = 37075, Sold = false },
+            new Plant() { PlantID = 2, Species = "Fern", LightNeeds = 2,
+                          AskingPrice = 12.00M, City = "Fern Gully",
+                          ZIP = 97031, Sold = true },
+            new Plant() { PlantID = 3, Species = "Peace Lily", LightNeeds = 5,
+                          AskingPrice = 32.35M, City = "Las Vegas", ZIP = 88901,
+                          Sold = false },
+            new Plant() {
+              PlantID = 4,
+              Species = "Money Tree",
+              LightNeeds = 3,
+              AskingPrice = 20.00M,
+              City = "Nashville",
+              ZIP = 37011,
+              Sold = false,
+            },
+            new Plant() { PlantID = 5, Species = "Aloe Vera", LightNeeds = 3,
+                          AskingPrice = 8.00M, City = "Goodlettsville",
+                          ZIP = 37072, Sold = true } };
 
 Random random = new();
-int randomPlant = random.Next(1, plants.Count);
 
-string greeting = "\n\t\tWelcome to Green Again\n\tYesterday's Blooms, Today's Treasures.\n";
+string greeting =
+    "\n\t\tWelcome to Green Again\n\tYesterday's Blooms, Today's Treasures.\n";
 
 Console.WriteLine(greeting);
 
 string? choice = null;
-while (choice != "5")
+while (choice != "6")
 {
 
     Console.WriteLine("Main Menu:\n");
@@ -118,9 +87,9 @@ while (choice != "5")
 
         default:
             Console.Clear();
-            Console.WriteLine("\nInvalid choice. Please, input a number from the list...");
+            Console.WriteLine(
+                "\nInvalid choice. Please, input a number from the list...");
             break;
-
     }
 }
 
@@ -130,7 +99,8 @@ void ListPlants()
 
     for (int i = 0; i < plants.Count; i++)
     {
-        Console.WriteLine($"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold == true ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars");
+        Console.WriteLine(
+            $"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars");
     }
 }
 
@@ -151,7 +121,7 @@ void PostPlant()
         int plantZip = 0;
 
         Console.WriteLine("Enter plant species:"); // Prompts User
-        readResult = Console.ReadLine(); // User Input
+        readResult = Console.ReadLine();           // User Input
         plantSpecies = readResult;
 
         Console.WriteLine("\nEnter plant light needs (1-5):");
@@ -186,15 +156,14 @@ void PostPlant()
         Console.Clear();
         Console.WriteLine("Plant Added!");
 
-        Console.WriteLine("Would you like to add another plant?\n\nHit Enter to add another or type Exit to go back to Main Menu...");
+        Console.WriteLine(
+            "Would you like to add another plant?\n\nHit Enter to add another or type Exit to go back to Main Menu...");
         readResult = Console.ReadLine();
-    }
-    while (string.IsNullOrEmpty(readResult));
+    } while (string.IsNullOrEmpty(readResult));
 }
 
 void AdoptPlant()
 {
-    // Display only available plants
     List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList();
 
     Console.WriteLine("Select a plant using its number:\n");
@@ -211,10 +180,6 @@ void AdoptPlant()
         Plant selectedPlant = availablePlants[choice - 1];
         selectedPlant.Sold = true;
         Console.WriteLine($"\n{selectedPlant.Species} has been purchased!");
-    }
-    else
-    {
-        Console.WriteLine("\nThat plant is no longer available");
     }
 }
 
@@ -233,14 +198,32 @@ void RemovePlant()
 
     if (deletedPlant != null)
     {
-        plants.Remove(deletedPlant);
-        Console.WriteLine("\nPlant deleted");
+        bool isRemoved = plants.Remove(deletedPlant);
+
+        if (isRemoved)
+        {
+            Console.WriteLine("\nPlant deleted");
+        }
+        else
+        {
+            Console.WriteLine("\nPlant not deleted");
+        }
     }
 }
 
 void PlantOfTheDay()
 {
+    List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList();
+    int randomPlant = random.Next(0, availablePlants.Count);
+
     Console.WriteLine("Today's Plant of the Day is...\n");
+
+    Plant plantOfTheDay = availablePlants[randomPlant];
+
+    Console.WriteLine($"Species: {plantOfTheDay.Species}");
+    Console.WriteLine($"City: {plantOfTheDay.City}");
+    Console.WriteLine($"Light Needs: {plantOfTheDay.LightNeeds}");
+    Console.WriteLine($"Price: {plantOfTheDay.AskingPrice}");
 }
 
 void ReturnMessage()
