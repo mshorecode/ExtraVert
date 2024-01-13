@@ -193,30 +193,38 @@ void PostPlant()
         readResult = Console.ReadLine();
         plantZip = Convert.ToInt32(readResult);
 
-        Console.WriteLine("\nEnter year post expires:");
+        Console.WriteLine("\nEnter year post expires (YYYY):");
         int year = int.Parse(Console.ReadLine());
 
-        Console.WriteLine("\nEnter month post expires:");
+        Console.WriteLine("\nEnter month post expires (MM):");
         int month = int.Parse(Console.ReadLine());
 
-        Console.WriteLine("\nEnter day post expires:");
+        Console.WriteLine("\nEnter day post expires (DD):");
         int day = int.Parse(Console.ReadLine());
 
-        DateTime postExpiration = new DateTime(year, month, day);
-
-        Plant newPlant = new()
+        try
         {
-            Species = plantSpecies,
-            LightNeeds = plantLight,
-            AskingPrice = plantPrice,
-            City = plantCity,
-            ZIP = plantZip,
-            AvailableUntil = postExpiration
-        };
 
-        plants.Add(newPlant);
-        Console.Clear();
-        Console.WriteLine("Plant Added!");
+            DateTime postExpiration = new DateTime(year, month, day);
+
+            Plant newPlant = new()
+            {
+                Species = plantSpecies,
+                LightNeeds = plantLight,
+                AskingPrice = plantPrice,
+                City = plantCity,
+                ZIP = plantZip,
+                AvailableUntil = postExpiration
+            };
+
+            plants.Add(newPlant);
+            Console.Clear();
+            Console.WriteLine("Plant Added!");
+        }
+        catch (ArgumentOutOfRangeException exception)
+        {
+            Console.WriteLine($"ERROR: {exception.Message}");
+        }
 
         Console.WriteLine(
             "Would you like to add another plant?\n\nHit Enter to add another or type Exit to go back to Main Menu...");
@@ -316,7 +324,7 @@ void SearchByLightNeeds()
 
 void ViewStatistics()
 {
-    List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList(); 
+    List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList();
 
     Console.WriteLine("Statistics");
 
