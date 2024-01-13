@@ -141,7 +141,7 @@ void ListPlants()
     for (int i = 0; i < plants.Count; i++)
     {
         Console.WriteLine(
-            $"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars");
+            $"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars. Post expires on {plants[i].AvailableUntil}");
     }
 }
 
@@ -185,13 +185,13 @@ void PostPlant()
         plantZip = Convert.ToInt32(readResult);
 
         Console.WriteLine("\nEnter year post expires:");
-        int year = int.Parse(readResult);
+        int year = int.Parse(Console.ReadLine());
 
         Console.WriteLine("\nEnter month post expires:");
-        int month = int.Parse(readResult);
+        int month = int.Parse(Console.ReadLine());
 
         Console.WriteLine("\nEnter day post expires:");
-        int day = int.Parse(readResult);
+        int day = int.Parse(Console.ReadLine());
 
         DateTime postExpiration = new DateTime(year, month, day);
 
