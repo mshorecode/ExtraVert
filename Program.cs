@@ -66,7 +66,7 @@ string greeting =
 Console.WriteLine(greeting);
 
 string? choice = null;
-while (choice != "7")
+while (choice != "8")
 {
 
     Console.WriteLine("Main Menu:\n");
@@ -76,7 +76,8 @@ while (choice != "7")
     Console.WriteLine("4. Delist a plant");
     Console.WriteLine("5. Plant of the Day");
     Console.WriteLine("6. Search by light needs");
-    Console.WriteLine("7. Exit\n");
+    Console.WriteLine("7. View app statistics");
+    Console.WriteLine("8. Exit\n");
 
     choice = Console.ReadLine();
     switch (choice)
@@ -121,7 +122,15 @@ while (choice != "7")
             ReturnMessage();
             Console.Clear();
             break;
+
         case "7":
+            Console.Clear();
+            ViewStatistics();
+            ReturnMessage();
+            Console.Clear();
+            break;
+
+        case "8":
             Console.Clear();
             Console.WriteLine("\nHave a pleasant day!\n\n");
             break;
@@ -162,7 +171,7 @@ void PostPlant()
         int plantZip = 0;
 
         Console.WriteLine("Enter plant species:");
-        readResult = Console.ReadLine();           // User Input
+        readResult = Console.ReadLine();
         plantSpecies = readResult;
 
         Console.WriteLine("\nEnter plant light needs (1-5):");
@@ -303,6 +312,28 @@ void SearchByLightNeeds()
         Console.WriteLine($"Location: {light.City}, {light.ZIP}");
     }
 
+}
+
+void ViewStatistics()
+{
+    List<Plant> availablePlants = plants.Where(p => !p.Sold).ToList(); 
+
+    Console.WriteLine("Statistics");
+
+    Plant? lowestPrice = plants.OrderBy(p => p.AskingPrice).FirstOrDefault();
+    Console.WriteLine($"\nLowest Priced Plant: {lowestPrice.Species} at {lowestPrice.AskingPrice:c}");
+
+    int numOfAvailablePlants = plants.Count(p => !p.Sold && p.AvailableUntil > DateTime.Now);
+    Console.WriteLine($"\nNumber of Available Plants: {numOfAvailablePlants} ");
+
+    Plant? highestLightNeed = plants.OrderByDescending(p => p.LightNeeds).FirstOrDefault();
+    Console.WriteLine($"\nHighest Light Needs: {highestLightNeed.Species}");
+
+    double averageLightNeed = plants.Average(p => p.LightNeeds);
+    Console.WriteLine($"\nAverage Light Needs: {averageLightNeed}");
+
+    double percentAdopted = (double)availablePlants.Count / plants.Count * 100;
+    Console.WriteLine($"\nPercentage of Adopted Plants: {percentAdopted}%");
 }
 
 void ReturnMessage()
