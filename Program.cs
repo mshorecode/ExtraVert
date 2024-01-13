@@ -149,8 +149,9 @@ void ListPlants()
 
     for (int i = 0; i < plants.Count; i++)
     {
-        Console.WriteLine(
-            $"{i + 1}. {plants[i].Species} in {plants[i].City} {(plants[i].Sold ? "was sold" : "is available")} for {plants[i].AskingPrice} dollars. Post expires on {plants[i].AvailableUntil}");
+        string? plantDetails = PlantDetails(plants[i]);
+
+        Console.WriteLine($"{plantDetails}");
     }
 }
 
@@ -342,6 +343,20 @@ void ViewStatistics()
 
     double percentAdopted = (double)availablePlants.Count / plants.Count * 100;
     Console.WriteLine($"\nPercentage of Adopted Plants: {percentAdopted}%");
+}
+
+string? PlantDetails(Plant plant)
+{
+    string? plantDetails =
+$@"Species: {plant.Species}
+Light Needs: {plant.LightNeeds}
+Price: {plant.AskingPrice}
+Location: {plant.City}
+Available: {(plant.Sold ? "Yes" : "No")}
+Post End Date: {plant.AvailableUntil}
+";
+
+    return plantDetails;
 }
 
 void ReturnMessage()
