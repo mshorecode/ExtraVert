@@ -12,25 +12,25 @@ List<Plant> plants = new()
         ZIP = 37075,
         Sold = false
     },
-    new Plant() 
-    { 
-        PlantID = 2, 
-        Species = "Fern", 
+    new Plant()
+    {
+        PlantID = 2,
+        Species = "Fern",
         LightNeeds = 2,
-        AskingPrice = 12.00M, 
+        AskingPrice = 12.00M,
         City = "Fern Gully",
-        ZIP = 97031, 
-        Sold = true 
+        ZIP = 97031,
+        Sold = true
     },
-    new Plant() 
-    { 
-        PlantID = 3, 
-        Species = "Peace Lily", 
+    new Plant()
+    {
+        PlantID = 3,
+        Species = "Peace Lily",
         LightNeeds = 5,
-        AskingPrice = 32.35M, 
-        City = "Las Vegas", 
+        AskingPrice = 32.35M,
+        City = "Las Vegas",
         ZIP = 88901,
-        Sold = false 
+        Sold = false
     },
     new Plant() {
         PlantID = 4,
@@ -41,16 +41,16 @@ List<Plant> plants = new()
         ZIP = 37011,
         Sold = false,
     },
-    new Plant() 
-    { 
-        PlantID = 5, 
-        Species = "Aloe Vera", 
+    new Plant()
+    {
+        PlantID = 5,
+        Species = "Aloe Vera",
         LightNeeds = 3,
-        AskingPrice = 8.00M, 
+        AskingPrice = 8.00M,
         City = "Goodlettsville",
-        ZIP = 37072, 
-        Sold = true 
-    } 
+        ZIP = 37072,
+        Sold = true
+    }
 };
 
 Random random = new();
@@ -113,6 +113,8 @@ while (choice != "7")
         case "6":
             Console.Clear();
             SearchByLightNeeds();
+            ReturnMessage();
+            Console.Clear();
             break;
         case "7":
             Console.Clear();
@@ -154,7 +156,7 @@ void PostPlant()
         string? plantCity = null;
         int plantZip = 0;
 
-        Console.WriteLine("Enter plant species:"); 
+        Console.WriteLine("Enter plant species:");
         readResult = Console.ReadLine();           // User Input
         plantSpecies = readResult;
 
@@ -264,24 +266,26 @@ void SearchByLightNeeds()
 {
     bool validInput = false;
     int numericValue = 0;
-    
+    string? readResult = null;
 
     do
     {
-        Console.WriteLine("Enter your preferred max light needs (1-5):\n");
-        string? readResult = Console.ReadLine();
-        
+        Console.WriteLine("\nEnter your preferred max light needs (1-5):\n");
+        readResult = Console.ReadLine();
+
         validInput = int.TryParse(readResult, out numericValue);
     }
     while (!validInput || numericValue < 1 || numericValue > 5);
 
-    List<Plant> lightNeeds = plants.Where(p => p.LightNeeds == numericValue).ToList();
-    if (numericValue > 0 && numericValue <= lightNeeds.Count)
-    {
-        Plant selectedPlant = lightNeeds[numericValue];
+    List<Plant> lightNeeds = plants.Where(p => p.LightNeeds <= numericValue).ToList();
 
-        Console.WriteLine($"{selectedPlant.Species}");
+    foreach (Plant light in lightNeeds)
+    {
+        Console.WriteLine($"\nSpecies: {light.Species}");
+        Console.WriteLine($"Price: {light.AskingPrice}");
+        Console.WriteLine($"Location: {light.City}, {light.ZIP}");
     }
+
 }
 
 void ReturnMessage()
