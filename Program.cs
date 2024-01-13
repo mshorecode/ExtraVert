@@ -10,7 +10,8 @@ List<Plant> plants = new()
         AskingPrice = 24.00M,
         City = "Hendersonville",
         ZIP = 37075,
-        Sold = false
+        Sold = false,
+        AvailableUntil = new DateTime(2024, 3, 1)
     },
     new Plant()
     {
@@ -20,7 +21,8 @@ List<Plant> plants = new()
         AskingPrice = 12.00M,
         City = "Fern Gully",
         ZIP = 97031,
-        Sold = true
+        Sold = true,
+        AvailableUntil = new DateTime(2024, 2, 12)
     },
     new Plant()
     {
@@ -30,7 +32,8 @@ List<Plant> plants = new()
         AskingPrice = 32.35M,
         City = "Las Vegas",
         ZIP = 88901,
-        Sold = false
+        Sold = false,
+        AvailableUntil = new DateTime(2024, 1, 23)
     },
     new Plant() {
         PlantID = 4,
@@ -40,6 +43,7 @@ List<Plant> plants = new()
         City = "Nashville",
         ZIP = 37011,
         Sold = false,
+        AvailableUntil = new DateTime(2024, 3, 22)
     },
     new Plant()
     {
@@ -49,7 +53,8 @@ List<Plant> plants = new()
         AskingPrice = 8.00M,
         City = "Goodlettsville",
         ZIP = 37072,
-        Sold = true
+        Sold = true,
+        AvailableUntil = new DateTime(2024, 1, 17)
     }
 };
 
@@ -179,6 +184,17 @@ void PostPlant()
         readResult = Console.ReadLine();
         plantZip = Convert.ToInt32(readResult);
 
+        Console.WriteLine("\nEnter year post expires:");
+        int year = int.Parse(readResult);
+
+        Console.WriteLine("\nEnter month post expires:");
+        int month = int.Parse(readResult);
+
+        Console.WriteLine("\nEnter day post expires:");
+        int day = int.Parse(readResult);
+
+        DateTime postExpiration = new DateTime(year, month, day);
+
         Plant newPlant = new()
         {
             Species = plantSpecies,
@@ -186,6 +202,7 @@ void PostPlant()
             AskingPrice = plantPrice,
             City = plantCity,
             ZIP = plantZip,
+            AvailableUntil = postExpiration
         };
 
         plants.Add(newPlant);
